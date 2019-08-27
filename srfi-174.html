@@ -111,7 +111,7 @@ timespecs that are relative to different epochs.</p>
     (else (< timespec-nanoseconds a) (timespec-nanoseconds b))))
 
 (define (timespec-hash a)
-    (+ (* (timespec-seconds a) #i1000000000) (timespec-nanoseconds a)))
+    (+ (* (timespec-seconds a) #e1000000000) (timespec-nanoseconds a)))
 
 (define timespec-comparator
     (make-comparator
