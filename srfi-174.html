@@ -68,8 +68,8 @@ be a disjoint type, but for efficiency's sake they may be represented
 otherwise in particular implementations.  If they are not disjoint, the
 exact representation (such as a pair) must be documented
 by the implementation.
-Note that IEEE 64-bit floats are not a sufficient representation, because
-their nanosecond-precision range is confined to a period of 208 days
+Note that IEEE 64-bit floats are <i>not</i> a sufficient representation,
+because their nanosecond-precision range is confined to a period of 208 days
 centered on the epoch.</p>
 
 <h2>Procedures</h2>
@@ -87,9 +87,16 @@ and <code>#t</code> if it is most probably one.</p>
 <i>obj</i> belongs to that type.  If not, then each component
 is checked to see if it is an exact integer, and in the case
 of the nanoseconds component, whether it is a non-negative integer
-less than 10<sup>9</sup>.  In addition, the integers will almost certainly
-be fixnums for all times in the past or future, so a check for fixnum
-status (if possible) will provide additional certitude.</p>
+less than 10<sup>9</sup>.
+
+<p>In addition, if the implementation knows that the maximum size of a
+fixnum will hold enough seconds to represent a large enough period of time,
+it can also check that the value of the seconds component is a fixnum.
+For example, 40-bit fixnums can encode more than
+15,000 years into the past and future, which should be more than sufficient
+for all practical purposes.  Unfortunately, 24-bit fixnums (which is all
+that R6RS and R7RS-large require) only allow about three months, which is
+almost always going to be insufficient.</p>
 
 <p><code>(timespec-seconds </code><i>timespec</i></code></p>
 
