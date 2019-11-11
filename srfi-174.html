@@ -54,13 +54,13 @@ from the same original library.</p>
 
 <h1>Specification</h1>
 
-<p>Timespec is a type that contains two exact integer values.
-The first is the number of seconds
+<p>Timespec is an immutable type that contains two exact integer values.
+The first value is the number of seconds
 since a particular <a href="https://en.wikipedia.org/wiki/Epoch_(computing)">
 epoch</a>,
 but normally excluding all leap seconds that have occurred since then.
 It may be positive or negative.
-The second is the number of nanoseconds since the beginning of the specified second.
+The second value is the number of nanoseconds since the beginning of the specified second.
 It is a non-negative integer less than 10<sup>9</sup>.</p>
 
 <p>It is recommended, but not required, that timespecs
@@ -68,6 +68,7 @@ be a disjoint type, but for efficiency's sake they may be represented
 otherwise in particular implementations.  If they are not disjoint, the
 exact representation (such as a pair) must be documented
 by the implementation.
+It is an error to mutate the values held in a timespec object.
 Note that IEEE 64-bit floats are <i>not</i> a sufficient representation,
 because their nanosecond-precision range is confined to a period of 208 days
 centered on the epoch.</p>
