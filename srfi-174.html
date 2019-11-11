@@ -59,7 +59,8 @@ The first value is the number of seconds
 since a particular <a href="https://en.wikipedia.org/wiki/Epoch_(computing)">
 epoch</a>,
 but normally excluding all leap seconds that have occurred since then.
-It may be positive or negative.
+The minimum range of values is 2<sup>-39</i> (inclusive)
+to 2<sup>39/i> (exclusive), allowing a range of at least 15,000 years before and after the epoch.
 The second value is the number of nanoseconds since the beginning of the specified second.
 It is a non-negative integer less than 10<sup>9</sup>.</p>
 
@@ -90,14 +91,8 @@ is checked to see if it is an exact integer, and in the case
 of the nanoseconds component, whether it is a non-negative integer
 less than 10<sup>9</sup>.
 
-<p>In addition, if the implementation knows that the maximum size of a
-fixnum will hold enough seconds to represent a large enough period of time,
-it can also check that the value of the seconds component is a fixnum.
-For example, 40-bit fixnums can encode more than
-15,000 years into the past and future, which should be more than sufficient
-for all practical purposes.  Unfortunately, 24-bit fixnums (which is all
-that R6RS and R7RS-large require) only allow about three months, which is
-almost always going to be insufficient.</p>
+<p>In addition, if the implementation knows that its fixnum width is at least 40 bits,
+it can also check that the value of the seconds component is a fixnum.</p>
 
 <p><code>(timespec-seconds </code><i>timespec</i></code></p>
 
