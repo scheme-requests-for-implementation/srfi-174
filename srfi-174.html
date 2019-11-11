@@ -55,15 +55,21 @@ from the same original library.</p>
 
 <h1>Specification</h1>
 
-<p>Timespec is a type that contains two exact integer values.
-The first is the number of seconds
-since a particular <a href="https://en.wikipedia.org/wiki/Epoch_(computing)">
-epoch</a>,
-but normally excluding all leap seconds that have occurred since then.
-It may be positive or negative.
-The second is the number of nanoseconds since the beginning of the specified second.
-It is a non-negative integer less than 10<sup>9</sup>.</p>
-
+<p>Timespec is a type that holds two exact integer values:</p>
+<ul>
+<li>The <i>seconds</i> component &mdash; If non-negative, the number of whole
+seconds since a particular
+<a href="https://en.wikipedia.org/wiki/Epoch_(computing)">epoch</a>.
+If negative, the number of whole seconds to go back in time from the epoch.
+Normally excludes leap seconds (i.e. a leap second that occurs between the
+epoch and <i>seconds</i> does not increment or decrement <i>seconds</i>).</li>
+<li>The <i>nanoseconds</i> component &mdash; The partial second added to
+<i>seconds</i>. Always non-negative and less than 10<sup>9</sup>.
+If <i>seconds</i> is non-negative, this is the number of additional
+nanoseconds to go toward the future after <i>seconds</i>.
+If <i>seconds</i> is negative, this is the number of additional nanoseconds
+to go further back in time beyond <i>seconds</i>.
+</ul>
 <p>It is recommended, but not required, that timespecs
 be a disjoint type, but for efficiency's sake they may be represented
 otherwise in particular implementations.  If they are not disjoint, the
@@ -77,7 +83,8 @@ centered on the epoch.</p>
 
 <p><code>(timespec </code><i>seconds nanoseconds</i><code>)</code></p>
 
-<p>Returns a timespec containing <i>seconds</i> and <i>nanoseconds</i>.
+<p>Returns a timespec with the given <i>seconds</i>
+and <i>nanoseconds</i> components.</p>
 
 <p><code>(timespec? </code><i>obj</i><code>)</code></p>
 
@@ -87,12 +94,12 @@ and <code>#t</code> if it is most probably one.</p>
 <p>If timespecs are a disjoint type, this procedure simply tests whether
 <i>obj</i> belongs to that type.  If not, then each component
 is checked to see if it is an exact integer, and in the case
-of the nanoseconds component, whether it is a non-negative integer
+of the <i>nanoseconds</i> component, whether it is a non-negative integer
 less than 10<sup>9</sup>.
 
 <p>In addition, if the implementation knows that the maximum size of a
 fixnum will hold enough seconds to represent a large enough period of time,
-it can also check that the value of the seconds component is a fixnum.
+it can also check that the value of the <i>seconds</i> component is a fixnum.
 For example, 40-bit fixnums can encode more than
 15,000 years into the past and future, which should be more than sufficient
 for all practical purposes.  Unfortunately, 24-bit fixnums (which is all
@@ -101,13 +108,13 @@ almost always going to be insufficient.</p>
 
 <p><code>(timespec-seconds </code><i>timespec</i>)</code></p>
 
-<p>Returns the seconds component of <i>timespec</i>.
+<p>Returns the <i>seconds</i> component of <i>timespec</i>.
 The result must be the same (in the sense of <code>eqv?</code>)
 to the value passed to <code>timespec</code>.</p>
 
 <p><code>(timespec-nanoseconds </code><i>timespec</i>)</code></p>
 
-<p>Returns the nanoseconds component of <i>timespec</i>.
+<p>Returns the <i>nanoseconds</i> component of <i>timespec</i>.
 The result must be the same (in the sense of <code>eqv?</code>)
 to the value passed to <code>timespec</code>.</p>
 
