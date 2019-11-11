@@ -78,6 +78,11 @@ by the implementation.
 Note that IEEE 64-bit floats are <i>not</i> a sufficient representation,
 because their nanosecond-precision range is confined to a period of 208 days
 centered on the epoch.</p>
+<p>In no case can this SRFI guarantee anything about the accuracy of
+timespecs, or the precision of any timespec sources. Since it is difficult
+to usefully determine and communicate timestamp precision and accuracy
+in most applications, the timespec type does not contain any standard
+field to hold such information.</p>
 
 <h2>Procedures</h2>
 
