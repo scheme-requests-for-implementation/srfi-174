@@ -56,26 +56,30 @@ from the same original library.</p>
 
 <h1>Specification</h1>
 
-<p>Timespec is a type that holds two exact integer values:</p>
+<p>Timespec is a immutable type that holds two exact integer values:</p>
 <ul>
-<li>The <i>seconds</i> component &mdash; If non-negative, the number of whole
+<li><p>The <i>seconds</i> component &mdash; If non-negative, the number of whole
 seconds since a particular
 <a href="https://en.wikipedia.org/wiki/Epoch_(computing)">epoch</a>.
 If negative, the number of whole seconds to go back in time from the epoch.
 Normally excludes leap seconds (i.e. a leap second that occurs between the
-epoch and <i>seconds</i> does not increment or decrement <i>seconds</i>).</li>
-<li>The <i>nanoseconds</i> component &mdash; The partial second added to
+epoch and <i>seconds</i> does not increment or decrement <i>seconds</i>).
+The minimum range of values is 2<sup>-39</sup> (inclusive)
+to 2<sup>39</sup> (exclusive), allowing a range of at least 15,000 years
+before and after the epoch.</p></li>
+<li><p>The <i>nanoseconds</i> component &mdash; The partial second added to
 <i>seconds</i>. Always non-negative and less than 10<sup>9</sup>.
 If <i>seconds</i> is non-negative, this is the number of additional
 nanoseconds to go toward the future after <i>seconds</i>.
 If <i>seconds</i> is negative, this is the number of additional nanoseconds
-to go further back in time beyond <i>seconds</i>.
+to go further back in time beyond <i>seconds</i>.</p></li>
 </ul>
 <p>It is recommended, but not required, that timespecs
 be a disjoint type, but for efficiency's sake they may be represented
 otherwise in particular implementations.  If they are not disjoint, the
 exact representation (such as a pair) must be documented
 by the implementation.
+It is an error to mutate the values held in a timespec object.
 Note that IEEE 64-bit floats are <i>not</i> a sufficient representation,
 because their nanosecond-precision range is confined to a period of 208 days
 centered on the epoch.</p>
@@ -102,15 +106,8 @@ and <code>#t</code> if it is most probably one.</p>
 is checked to see if it is an exact integer, and in the case
 of the <i>nanoseconds</i> component, whether it is a non-negative integer
 less than 10<sup>9</sup>.
-
-<p>In addition, if the implementation knows that the maximum size of a
-fixnum will hold enough seconds to represent a large enough period of time,
-it can also check that the value of the <i>seconds</i> component is a fixnum.
-For example, 40-bit fixnums can encode more than
-15,000 years into the past and future, which should be more than sufficient
-for all practical purposes.  Unfortunately, 24-bit fixnums (which is all
-that R6RS and R7RS-large require) only allow about three months, which is
-almost always going to be insufficient.</p>
+In addition, if the implementation knows that its fixnum width is at least 40 bits,
+it can also check that the value of the seconds component is a fixnum.</p>
 
 <p><code>(timespec-seconds </code><i>timespec</i>)</code></p>
 
@@ -124,14 +121,37 @@ as the value passed to <code>timespec</code>.</p>
 The result must be the same (in the sense of <code>eqv?</code>)
 as the value passed to <code>timespec</code>.</p>
 
-<p><code>timespec-comparator</code></p>
+<p><code>(inexact->timespec </code><i>inexact</i><code>)</code></p>
 
-<p>This variable (not a procedure) is a comparator object for
-timespecs, ordering them by the total number of nanoseconds.
-A simple hash function is also provided.</p>
+<p>Converts <i>inexact</i> into an approximate number of seconds and
+nanoseconds since the (unspecified) epoch and returns the results as
+a timespec object.</p>
+
+<p><code>(timespec->inexact </code><i>timespec</i><code>)</code></p>
+
+<p>Returns an inexact number representing the seconds from the epoch to
+the value of <i>timespec</i>.</p>
+
+<p>Note that these operations are not inverses, because inexact numbers
+typically do not have nanosecond precision.</p>
+
+<p><code>(timespec=? </code><i>timespec1 timespec2</i><code>)</code></p>
+
+<p>Returns <code>#t</code> if <i>timespec1</i> and <i>timespec2</i>
+represent the same instant of time, and <code>#f</code> otherwise.
+
+<p><code>(timespec=&lt;? </code><i>timespec1 timespec2</i><code>)</code></p>
+
+<p>Returns <code>#t</code> if <i>timespec1</i> represents an earlier
+instant of time then <i>timespec2</i>, and <code>#f</code> otherwise.
 
 <p>Note that it is an (undetectable) error to compare two
 timespecs that are relative to different epochs.</p>
+
+<p><code>(timespec-hash </code><i>timespec</i><code>)</code></p>
+
+<p>Returns a non-negative integer representing a hash code
+for <i>timespec</i>.</p>
 
 <h1>Implementation</h1>
 
