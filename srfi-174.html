@@ -109,13 +109,13 @@ less than 10<sup>9</sup>.
 In addition, if the implementation knows that its fixnum width is at least 40 bits,
 it can also check that the value of the seconds component is a fixnum.</p>
 
-<p><code>(timespec-seconds </code><i>timespec</i>)</code></p>
+<p><code>(timespec-seconds </code><i>timespec</i><code>)</code></p>
 
 <p>Returns the <i>seconds</i> component of <i>timespec</i>.
 The result must be the same (in the sense of <code>eqv?</code>)
 as the value passed to <code>timespec</code>.</p>
 
-<p><code>(timespec-nanoseconds </code><i>timespec</i>)</code></p>
+<p><code>(timespec-nanoseconds </code><i>timespec</i><code>)</code></p>
 
 <p>Returns the <i>nanoseconds</i> component of <i>timespec</i>.
 The result must be the same (in the sense of <code>eqv?</code>)
