@@ -155,16 +155,19 @@ for <i>timespec</i>.</p>
 
 <h1>Implementation</h1>
 
-<p>Two implementations of SRFI 174 are in the repository of this SRFI.
+<p>An implementation of SRFI 174 is in the repository of this SRFI.
 The files are:</p>
 
 <ul>
 <li><code>srfi/174.sld</code> - uses a disjoint type</li>
-<li><code>srfi/pair-174.sld</code> - uses a pair</li>
 <li><code>chibi-tests.scm</code> - Tests using <code>(chibi tests)</code></li>
 <li><code>chibi-tests-pair.scm</code> - Tests for <code>(srfi pair-174)</code></li>
 </ul>
-
+<p>Note: A pair-based implementation is also available; simply
+comment out the `define-record-type` declaration
+in <code>srfi/174.sld</code> and remove the comment markers
+from the declarations that follow.
+</p>
 
 <h1>Acknowledgements</h1>
 
