@@ -56,7 +56,7 @@ from the same original library.</p>
 
 <h1>Specification</h1>
 
-<p>Timespec is a immutable type that holds two exact integer values:</p>
+<p>Timespec is an immutable type that holds two exact integer values:</p>
 <ul>
 <li><p>The <i>seconds</i> component &mdash; If non-negative, the number of whole
 seconds since a particular
@@ -143,7 +143,7 @@ represent the same instant of time, and <code>#f</code> otherwise.
 <p><code>(timespec=&lt;? </code><i>timespec1 timespec2</i><code>)</code></p>
 
 <p>Returns <code>#t</code> if <i>timespec1</i> represents an earlier
-instant of time then <i>timespec2</i>, and <code>#f</code> otherwise.
+instant of time than <i>timespec2</i>, and <code>#f</code> otherwise.
 
 <p>Note that it is an (undetectable) error to compare two
 timespecs that are relative to different epochs.</p>
