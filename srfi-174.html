@@ -56,7 +56,7 @@ from the same original library.</p>
 
 <h1>Specification</h1>
 
-<p>Timespec is a immutable type that holds two exact integer values:</p>
+<p>Timespec is an immutable type that holds two exact integer values:</p>
 <ul>
 <li><p>The <i>seconds</i> component &mdash; If non-negative, the number of whole
 seconds since a particular
@@ -72,15 +72,23 @@ before and after the epoch.</p></li>
 If <i>seconds</i> is non-negative, this is the number of additional
 nanoseconds to go toward the future after <i>seconds</i>.
 If <i>seconds</i> is negative, this is the number of additional nanoseconds
-to go further back in time beyond <i>seconds</i>.</p></li>
+to go further back in time before <i>seconds</i>.</p></li>
 </ul>
-<p>It is recommended, but not required, that timespecs
-be a disjoint type, but for efficiency's sake they may be represented
+<p>It is recommended, but not absolutely required, that timespecs
+be a disjoint and immutable type.  For efficiency's sake they may be represented
 otherwise in particular implementations.  If they are not disjoint, the
-exact representation (such as a pair) must be documented
-by the implementation.
-It is an error to mutate the values held in a timespec object.
-Note that IEEE 64-bit floats are <i>not</i> a sufficient representation,
+exact representation (such as a SRFI 19 time object
+or a pair) must be documented by the implementation.</p>
+
+<p>If timespecs are represented as SRFI 19 time objects,
+the <code>timespec</code> constructor must set the
+SRFI 19 time type to <code>TIME_UTC</code>.
+It is an error to mutate a time object (or pair, or other type)
+that is serving as a timespec,
+and if this is done, code relying on the immutability of timespecs will break.</p>
+
+<p>Note that IEEE 64-bit floats are <i>not</i> a sufficient representation
+for timespecs,
 because their nanosecond-precision range is confined to a period of 208 days
 centered on the epoch.</p>
 <p>In no case can this SRFI guarantee anything about the accuracy of
