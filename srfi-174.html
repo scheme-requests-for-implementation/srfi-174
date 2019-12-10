@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>SRFI 174: POSIX Timespecs</title>
@@ -36,10 +36,6 @@ to represent the <code>struct timespec</code> defined by the
 <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/time.h.html">
 P<small>OSIX</small> <code>&lt;time.h&gt;</code> header</a>.</p>
 
-<h1>Issues</h1>
-
-None at present.
-
 <h1>Rationale</h1>
 
 <p>The reason for putting this very simple and straightforward type
@@ -56,7 +52,7 @@ from the same original library.</p>
 
 <h1>Specification</h1>
 
-<p>Timespec is a immutable type that holds two exact integer values:</p>
+<p>Timespec is an immutable type that holds two exact integer values:</p>
 <ul>
 <li><p>The <i>seconds</i> component &mdash; If non-negative, the number of whole
 seconds since a particular
@@ -76,9 +72,7 @@ to go further back in time beyond <i>seconds</i>.</p></li>
 </ul>
 <p>It is recommended, but not required, that timespecs
 be a disjoint type, but for efficiency's sake they may be represented
-otherwise in particular implementations.  If they are not disjoint, the
-exact representation (such as a pair) must be documented
-by the implementation.
+otherwise in particular implementations.
 It is an error to mutate the values held in a timespec object.
 Note that IEEE 64-bit floats are <i>not</i> a sufficient representation,
 because their nanosecond-precision range is confined to a period of 208 days
@@ -88,6 +82,16 @@ timespecs, or the precision of any timespec sources. Since it is difficult
 to usefully determine and communicate timestamp precision and accuracy
 in most applications, the timespec type does not contain any standard
 field to hold such information.</p>
+
+<h2>Documentation requirements</h2>
+
+<p>An implementation of this SRFI must document:</p>
+<ul>
+<li>Which concrete representation is used for the timespec abstract
+data type (a disjoint type, a pair, etc.)</li>
+<li>The minimum and maximum values of the <i>seconds</i>
+component.</li>
+</ul>
 
 <h2>Procedures</h2>
 
@@ -109,13 +113,13 @@ less than 10<sup>9</sup>.
 In addition, if the implementation knows that its fixnum width is at least 40 bits,
 it can also check that the value of the seconds component is a fixnum.</p>
 
-<p><code>(timespec-seconds </code><i>timespec</i>)</code></p>
+<p><code>(timespec-seconds </code><i>timespec</i><code>)</code></p>
 
 <p>Returns the <i>seconds</i> component of <i>timespec</i>.
 The result must be the same (in the sense of <code>eqv?</code>)
 as the value passed to <code>timespec</code>.</p>
 
-<p><code>(timespec-nanoseconds </code><i>timespec</i>)</code></p>
+<p><code>(timespec-nanoseconds </code><i>timespec</i><code>)</code></p>
 
 <p>Returns the <i>nanoseconds</i> component of <i>timespec</i>.
 The result must be the same (in the sense of <code>eqv?</code>)
@@ -143,14 +147,14 @@ represent the same instant of time, and <code>#f</code> otherwise.
 <p><code>(timespec=&lt;? </code><i>timespec1 timespec2</i><code>)</code></p>
 
 <p>Returns <code>#t</code> if <i>timespec1</i> represents an earlier
-instant of time then <i>timespec2</i>, and <code>#f</code> otherwise.
+instant of time than <i>timespec2</i>, and <code>#f</code> otherwise.
 
 <p>Note that it is an (undetectable) error to compare two
 timespecs that are relative to different epochs.</p>
 
 <p><code>(timespec-hash </code><i>timespec</i><code>)</code></p>
 
-<p>Returns a non-negative integer representing a hash code
+<p>Returns an exact non-negative integer representing a hash code
 for <i>timespec</i>.</p>
 
 <h1>Implementation</h1>
