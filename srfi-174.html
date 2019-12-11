@@ -68,8 +68,23 @@ before and after the epoch.</p></li>
 If <i>seconds</i> is non-negative, this is the number of additional
 nanoseconds to go toward the future after <i>seconds</i>.
 If <i>seconds</i> is negative, this is the number of additional nanoseconds
-to go further back in time beyond <i>seconds</i>.</p></li>
+to go further back in time before <i>seconds</i>.</p></li>
 </ul>
+<p>It is recommended, but not absolutely required, that timespecs
+be a disjoint and immutable type.  For efficiency's sake they may be represented
+otherwise in particular implementations.  If they are not disjoint, the
+exact representation (such as a SRFI 19 time object
+or a pair) must be documented by the implementation.</p>
+
+<p>If timespecs are represented as SRFI 19 time objects,
+the <code>timespec</code> constructor must set the
+SRFI 19 time type to <code>TIME_UTC</code>.
+It is an error to mutate a time object (or pair, or other type)
+that is serving as a timespec,
+and if this is done, code relying on the immutability of timespecs will break.</p>
+
+<p>Note that IEEE 64-bit floats are <i>not</i> a sufficient representation
+for timespecs,
 <p>It is recommended, but not required, that timespecs
 be a disjoint type, but for efficiency's sake they may be represented
 otherwise in particular implementations.
@@ -159,16 +174,19 @@ for <i>timespec</i>.</p>
 
 <h1>Implementation</h1>
 
-<p>Two implementations of SRFI 174 are in the repository of this SRFI.
+<p>An implementation of SRFI 174 is in the repository of this SRFI.
 The files are:</p>
 
 <ul>
 <li><code>srfi/174.sld</code> - uses a disjoint type</li>
-<li><code>srfi/pair-174.sld</code> - uses a pair</li>
 <li><code>chibi-tests.scm</code> - Tests using <code>(chibi tests)</code></li>
 <li><code>chibi-tests-pair.scm</code> - Tests for <code>(srfi pair-174)</code></li>
 </ul>
-
+<p>Note: A pair-based implementation is also available; simply
+comment out the `define-record-type` declaration
+in <code>srfi/174.sld</code> and remove the comment markers
+from the declarations that follow.
+</p>
 
 <h1>Acknowledgements</h1>
 
