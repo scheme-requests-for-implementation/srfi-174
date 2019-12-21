@@ -52,5 +52,5 @@
 (define (inexact->timespec inex)
   (let* ((quo (exact (truncate inex)))
          (rem (exact (- inex quo))))
-    (timespec quo (abs rem))))
+    (timespec quo (exact (truncate (* (abs rem) #e1e9))))))
 ))

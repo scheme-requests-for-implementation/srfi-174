@@ -23,8 +23,9 @@
 (test-assert "less -seconds" (timespec<? ts-neg3 ts-neg2))
 (test-assert "positive hash" (positive? (timespec-hash ts-neg1)))
 (test "to inexact" #i1.1 (timespec->inexact (timespec 1 #e1e8)))
-(test-assert "from inexact"
-  (timespec=? (timespec 1 #e1e8) (inexact->timespec #i1.1)))
+(let ((t (timespec 1 1))
+      (u (inexact->timespec #i1.000000001)))
+  (test "from inexact" t u))
 )
 
 (test-exit)
