@@ -17,13 +17,13 @@
 ; (define timespec cons)
 ; (define timespec-seconds car)
 ; (define timespec-nanoseconds cdr)
-; 
+;
 ; (define (timespec? obj)
 ;   (and (pair? obj)
 ;        (exact-integer? (car obj))
 ;        (exact-integer? (cdr obj))
 ;        (<= 0 (cdr obj) (- #e1e9 1))))
-  
+
 (define (timespec=? a b)
   (and (= (timespec-seconds a) (timespec-seconds b))
        (= (timespec-nanoseconds a) (timespec-nanoseconds b))))
